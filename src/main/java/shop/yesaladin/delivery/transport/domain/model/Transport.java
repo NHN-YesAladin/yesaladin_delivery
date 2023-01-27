@@ -1,0 +1,50 @@
+package shop.yesaladin.delivery.transport.domain.model;
+
+import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+/**
+ * 배송의 엔티티 클래스 입니다.
+ *
+ * @author : 송학현
+ * @since : 1.0
+ */
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(name = "transports")
+@Entity
+public class Transport {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "reception_datetime", nullable = false)
+    private LocalDate receptionDatetime;
+
+    @Column(name = "completion_datetime")
+    private LocalDate completionDatetime;
+
+    @Column(name = "order_id", nullable = false)
+    private Long orderId;
+
+    @Column(name = "tracking_no", nullable = false)
+    private String trackingNo;
+
+    @Column(name = "transport_status_code")
+    @Convert(converter = TransportStatusCodeConverter.class)
+    private TransportStatusCode transportStatusCode;
+}
