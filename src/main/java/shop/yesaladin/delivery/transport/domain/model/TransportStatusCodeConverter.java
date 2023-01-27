@@ -5,7 +5,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- *
+ * 배송의 배송 상태 코드를 변환 하기 위한 컨버터 클래스 입니다.
  *
  * @author : 송학현
  * @since : 1.0
