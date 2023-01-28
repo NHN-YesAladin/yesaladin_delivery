@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import shop.yesaladin.delivery.transport.exception.TransportAlreadyCompletedException;
 
 /**
  * 배송의 엔티티 클래스 입니다.
@@ -47,4 +48,18 @@ public class Transport {
     @Column(name = "transport_status_code")
     @Convert(converter = TransportStatusCodeConverter.class)
     private TransportStatusCode transportStatusCode;
+
+    /**
+     * 배송이 완료 되었을 때 상태를 변경 하기 위한 기능 입니다.
+     *
+     * @author : 송학현
+     * @since : 1.0
+     */
+    public void completeTransport() {
+        if (this.transportStatusCode.equals(TransportStatusCode.COMPLETE)) {
+            throw new TransportAlreadyCompletedException(this.id);
+        }
+        this.completionDatetime = LocalDate.now();
+        this.transportStatusCode = TransportStatusCode.COMPLETE;
+    }
 }
