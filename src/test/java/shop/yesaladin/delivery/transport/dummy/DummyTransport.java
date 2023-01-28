@@ -17,4 +17,31 @@ public class DummyTransport {
                 .transportStatusCode(TransportStatusCode.INPROGRESS)
                 .build();
     }
+
+    public static Transport dummyWithId(Clock clock, String trackingNo) {
+        long transportId = 1L;
+        long orderId = 1L;
+
+        return Transport.builder()
+                .id(transportId)
+                .receptionDatetime(LocalDate.now(clock))
+                .orderId(orderId)
+                .trackingNo(trackingNo)
+                .transportStatusCode(TransportStatusCode.INPROGRESS)
+                .build();
+    }
+
+    public static Transport dummyAlreadyComplete(Clock clock, String trackingNo) {
+        long transportId = 1L;
+        long orderId = 1L;
+
+        return Transport.builder()
+                .id(transportId)
+                .receptionDatetime(LocalDate.now(clock))
+                .orderId(orderId)
+                .trackingNo(trackingNo)
+                .transportStatusCode(TransportStatusCode.COMPLETE)
+                .completionDatetime(LocalDate.now(clock))
+                .build();
+    }
 }
