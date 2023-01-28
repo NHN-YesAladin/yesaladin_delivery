@@ -45,7 +45,7 @@ public class Transport {
     @Column(name = "tracking_no", nullable = false)
     private String trackingNo;
 
-    @Column(name = "transport_status_code")
+    @Column(name = "transport_status_code_id")
     @Convert(converter = TransportStatusCodeConverter.class)
     private TransportStatusCode transportStatusCode;
 
