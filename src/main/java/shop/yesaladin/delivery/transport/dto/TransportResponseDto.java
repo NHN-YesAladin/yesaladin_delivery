@@ -10,8 +10,8 @@ import shop.yesaladin.delivery.transport.domain.model.Transport;
 /**
  * 배송 정보를 담은 DTO 클래스 입니다.
  *
- * @author : 송학현
- * @since : 1.0
+ * @author 송학현
+ * @since 1.0
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

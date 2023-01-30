@@ -13,8 +13,8 @@ import shop.yesaladin.delivery.transport.exception.TransportNotFoundException;
 /**
  * 예외 처리를 위한 RestController Advice 입니다.
  *
- * @author : 송학현
- * @since : 1.0
+ * @author 송학현
+ * @since 1.0
  */
 @Slf4j
 @RestControllerAdvice

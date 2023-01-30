@@ -18,8 +18,8 @@ import shop.yesaladin.delivery.transport.service.inter.TransportService;
 /**
  * 배송 도메인의 Service 구현체 입니다.
  *
- * @author : 송학현
- * @since : 1.0
+ * @author 송학현
+ * @since 1.0
  */
 @Slf4j
 @RequiredArgsConstructor
