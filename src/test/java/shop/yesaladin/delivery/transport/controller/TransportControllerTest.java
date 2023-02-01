@@ -74,12 +74,12 @@ class TransportControllerTest {
         //then
         perform.andDo(print()).andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", equalTo(transport.getId().intValue())))
-                .andExpect(jsonPath("$.receptionDatetime", equalTo(transport.getReceptionDatetime().toString())))
-                .andExpect(jsonPath("$.completionDatetime", equalTo(transport.getCompletionDatetime())))
-                .andExpect(jsonPath("$.orderId", equalTo(transport.getOrderId().intValue())))
-                .andExpect(jsonPath("$.trackingNo", equalTo(transport.getTrackingNo())))
-                .andExpect(jsonPath("$.transportStatus", equalTo(transport.getTransportStatusCode().name())));
+                .andExpect(jsonPath("$.data.id", equalTo(transport.getId().intValue())))
+                .andExpect(jsonPath("$.data.receptionDatetime", equalTo(transport.getReceptionDatetime().toString())))
+                .andExpect(jsonPath("$.data.completionDatetime", equalTo(transport.getCompletionDatetime())))
+                .andExpect(jsonPath("$.data.orderId", equalTo(transport.getOrderId().intValue())))
+                .andExpect(jsonPath("$.data.trackingNo", equalTo(transport.getTrackingNo())))
+                .andExpect(jsonPath("$.data.transportStatus", equalTo(transport.getTransportStatusCode().name())));
 
         verify(transportService, times(1)).registerTransport(orderId);
     }
@@ -98,12 +98,12 @@ class TransportControllerTest {
         //then
         perform.andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[0].id", equalTo(transport.getId().intValue())))
-                .andExpect(jsonPath("$.[0].receptionDatetime", equalTo(transport.getReceptionDatetime().toString())))
-                .andExpect(jsonPath("$.[0].completionDatetime", equalTo(transport.getCompletionDatetime())))
-                .andExpect(jsonPath("$.[0].orderId", equalTo(transport.getOrderId().intValue())))
-                .andExpect(jsonPath("$.[0].trackingNo", equalTo(transport.getTrackingNo())))
-                .andExpect(jsonPath("$.[0].transportStatus", equalTo(transport.getTransportStatusCode().name())));
+                .andExpect(jsonPath("$.data.[0].id", equalTo(transport.getId().intValue())))
+                .andExpect(jsonPath("$.data.[0].receptionDatetime", equalTo(transport.getReceptionDatetime().toString())))
+                .andExpect(jsonPath("$.data.[0].completionDatetime", equalTo(transport.getCompletionDatetime())))
+                .andExpect(jsonPath("$.data.[0].orderId", equalTo(transport.getOrderId().intValue())))
+                .andExpect(jsonPath("$.data.[0].trackingNo", equalTo(transport.getTrackingNo())))
+                .andExpect(jsonPath("$.data.[0].transportStatus", equalTo(transport.getTransportStatusCode().name())));
 
         verify(transportService, times(1)).findAll();
     }
@@ -139,12 +139,12 @@ class TransportControllerTest {
         //then
         perform.andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", equalTo(transport.getId().intValue())))
-                .andExpect(jsonPath("$.receptionDatetime", equalTo(transport.getReceptionDatetime().toString())))
-                .andExpect(jsonPath("$.completionDatetime", equalTo(transport.getCompletionDatetime())))
-                .andExpect(jsonPath("$.orderId", equalTo(transport.getOrderId().intValue())))
-                .andExpect(jsonPath("$.trackingNo", equalTo(transport.getTrackingNo())))
-                .andExpect(jsonPath("$.transportStatus", equalTo(transport.getTransportStatusCode().name())));
+                .andExpect(jsonPath("$.data.id", equalTo(transport.getId().intValue())))
+                .andExpect(jsonPath("$.data.receptionDatetime", equalTo(transport.getReceptionDatetime().toString())))
+                .andExpect(jsonPath("$.data.completionDatetime", equalTo(transport.getCompletionDatetime())))
+                .andExpect(jsonPath("$.data.orderId", equalTo(transport.getOrderId().intValue())))
+                .andExpect(jsonPath("$.data.trackingNo", equalTo(transport.getTrackingNo())))
+                .andExpect(jsonPath("$.data.transportStatus", equalTo(transport.getTransportStatusCode().name())));
 
         verify(transportService, times(1)).findById(id);
     }

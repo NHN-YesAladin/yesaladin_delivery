@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import shop.yesaladin.common.dto.ResponseDto;
 import shop.yesaladin.delivery.transport.dto.TransportResponseDto;
 import shop.yesaladin.delivery.transport.service.inter.TransportService;
 
@@ -36,8 +37,13 @@ public class TransportController {
      */
     @PostMapping("/{orderId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public TransportResponseDto register(@PathVariable Long orderId) {
-        return transportService.registerTransport(orderId);
+    public ResponseDto<TransportResponseDto> register(@PathVariable Long orderId) {
+        TransportResponseDto response = transportService.registerTransport(orderId);
+        return ResponseDto.<TransportResponseDto>builder()
+                .status(HttpStatus.CREATED)
+                .success(true)
+                .data(response)
+                .build();
     }
 
     /**
@@ -50,8 +56,13 @@ public class TransportController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TransportResponseDto> findAll() {
-        return transportService.findAll();
+    public ResponseDto<List<TransportResponseDto>> findAll() {
+        List<TransportResponseDto> response = transportService.findAll();
+        return ResponseDto.<List<TransportResponseDto>>builder()
+                .status(HttpStatus.OK)
+                .success(true)
+                .data(response)
+                .build();
     }
 
     /**
@@ -65,7 +76,12 @@ public class TransportController {
      */
     @GetMapping("/{transportId}")
     @ResponseStatus(HttpStatus.OK)
-    public TransportResponseDto findByDeliveryId(@PathVariable Long transportId) {
-        return transportService.findById(transportId);
+    public ResponseDto<TransportResponseDto> findByDeliveryId(@PathVariable Long transportId) {
+        TransportResponseDto response = transportService.findById(transportId);
+        return ResponseDto.<TransportResponseDto>builder()
+                .status(HttpStatus.OK)
+                .success(true)
+                .data(response)
+                .build();
     }
 }
