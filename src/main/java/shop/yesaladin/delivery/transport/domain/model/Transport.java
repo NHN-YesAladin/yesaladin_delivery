@@ -18,8 +18,8 @@ import shop.yesaladin.delivery.transport.exception.TransportAlreadyCompletedExce
 /**
  * 배송의 엔티티 클래스 입니다.
  *
- * @author : 송학현
- * @since : 1.0
+ * @author 송학현
+ * @since 1.0
  */
 @Getter
 @Builder
@@ -52,8 +52,8 @@ public class Transport {
     /**
      * 배송이 완료 되었을 때 상태를 변경 하기 위한 기능 입니다.
      *
-     * @author : 송학현
-     * @since : 1.0
+     * @author 송학현
+     * @since 1.0
      */
     public void completeTransport() {
         if (this.transportStatusCode.equals(TransportStatusCode.COMPLETE)) {

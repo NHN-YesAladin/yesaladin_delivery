@@ -7,8 +7,8 @@ import javax.persistence.Converter;
 /**
  * 배송의 배송 상태 코드를 변환 하기 위한 컨버터 클래스 입니다.
  *
- * @author : 송학현
- * @since : 1.0
+ * @author 송학현
+ * @since 1.0
  */
 @Converter(autoApply = true)
 public class TransportStatusCodeConverter implements AttributeConverter<TransportStatusCode, Integer> {
@@ -18,8 +18,8 @@ public class TransportStatusCodeConverter implements AttributeConverter<Transpor
      *
      * @param transportStatusCode 배송상태코드
      * @return 배송상태코드의 Id
-     * @author : 송학현
-     * @since : 1.0
+     * @author 송학현
+     * @since 1.0
      */
     @Override
     public Integer convertToDatabaseColumn(TransportStatusCode transportStatusCode) {
@@ -31,8 +31,8 @@ public class TransportStatusCodeConverter implements AttributeConverter<Transpor
      *
      * @param integer 배송상태코드의 Id
      * @return 배송상태코드
-     * @author : 송학현
-     * @since : 1.0
+     * @author 송학현
+     * @since 1.0
      */
     @Override
     public TransportStatusCode convertToEntityAttribute(Integer integer) {
