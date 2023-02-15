@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.domain.model.TransportStatusCode;
 import shop.yesaladin.delivery.transport.domain.repository.TransportRepository;
+import shop.yesaladin.delivery.transport.dto.TransportCompleteEventDto;
 import shop.yesaladin.delivery.transport.dto.TransportResponseDto;
 import shop.yesaladin.delivery.transport.exception.TransportNotFoundException;
 import shop.yesaladin.delivery.transport.service.inter.TransportService;
@@ -46,6 +47,8 @@ public class TransportServiceImpl implements TransportService {
                 .build();
         Transport savedTransport = transportRepository.save(transport);
 
+        applicationEventPublisher.publishEvent(new TransportCompleteEventDto(transport.getOrderId()));
+
         return TransportResponseDto.fromEntity(savedTransport);
     }
 
@@ -54,15 +57,15 @@ public class TransportServiceImpl implements TransportService {
      */
     @Override
     @Transactional
-    public TransportResponseDto completeTransport(Long transportId) {
-        Transport transport = getTransport(transportId);
+    public TransportResponseDto completeTransport(Long orderId) {
+        Transport transport = getTransport(orderId);
         transport.completeTransport();
         return TransportResponseDto.fromEntity(transport);
     }
 
-    private Transport getTransport(Long transportId) {
-        return transportRepository.findById(transportId)
-                .orElseThrow(() -> new TransportNotFoundException(transportId));
+    private Transport getTransport(Long orderId) {
+        return transportRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new TransportNotFoundException(orderId));
     }
 
     /**
