@@ -24,6 +24,7 @@ import shop.yesaladin.delivery.transport.domain.repository.TransportRepository;
 import shop.yesaladin.delivery.transport.dto.TransportResponseDto;
 import shop.yesaladin.delivery.transport.dummy.DummyTransport;
 import shop.yesaladin.delivery.transport.exception.TransportAlreadyCompletedException;
+import shop.yesaladin.delivery.transport.exception.TransportNotFoundByOrderIdException;
 import shop.yesaladin.delivery.transport.exception.TransportNotFoundException;
 import shop.yesaladin.delivery.transport.service.inter.TransportService;
 
@@ -74,35 +75,34 @@ class TransportServiceImplTest {
     @DisplayName("해당 배송이 없는 경우 예외가 발생 한다.")
     void completeTransport_fail_notFoundTransport() throws Exception {
         //given
-        long transportId = 1L;
+        long orderId = 1L;
 
-        Mockito.when(repository.findById(transportId)).thenReturn(Optional.empty());
+        Mockito.when(repository.findByOrderId(orderId)).thenReturn(Optional.empty());
 
         //when, then
-        assertThatThrownBy(() -> service.completeTransport(transportId))
-                .isInstanceOf(TransportNotFoundException.class)
-                .hasMessageContainingAll("Transport not founded, transport id: " + transportId);
+        assertThatThrownBy(() -> service.completeTransport(orderId))
+                .isInstanceOf(TransportNotFoundByOrderIdException.class)
+                .hasMessageContainingAll("Transport not founded, order id: " + orderId);
 
-        verify(repository, times(1)).findById(transportId);
+        verify(repository, times(1)).findByOrderId(orderId);
     }
-
 
     @Test
     @DisplayName("해당 배송이 이미 완료된 경우 예외가 발생 한다.")
     void completeTransport_fail_alreadyCompleted() throws Exception {
         //given
-        long transportId = 1L;
+        long orderId = 1L;
         String trackingNo = UUID.randomUUID().toString();
         Transport transport = DummyTransport.dummyAlreadyComplete(clock, trackingNo);
 
-        Mockito.when(repository.findById(transportId)).thenReturn(Optional.of(transport));
+        Mockito.when(repository.findByOrderId(orderId)).thenReturn(Optional.of(transport));
 
         //when, then
-        assertThatThrownBy(() -> service.completeTransport(transportId))
+        assertThatThrownBy(() -> service.completeTransport(orderId))
                 .isInstanceOf(TransportAlreadyCompletedException.class)
-                .hasMessageContainingAll("Transport already completed, transport id: " + transportId);
+                .hasMessageContainingAll("Transport already completed, order id: " + orderId);
 
-        verify(repository, times(1)).findById(transportId);
+        verify(repository, times(1)).findByOrderId(orderId);
     }
 
     @Test
@@ -114,10 +114,10 @@ class TransportServiceImplTest {
         String trackingNo = UUID.randomUUID().toString();
         Transport transport = DummyTransport.dummyWithId(clock, trackingNo);
 
-        Mockito.when(repository.findById(transportId)).thenReturn(Optional.of(transport));
+        Mockito.when(repository.findByOrderId(orderId)).thenReturn(Optional.of(transport));
 
         //when
-        TransportResponseDto response = service.completeTransport(transportId);
+        TransportResponseDto response = service.completeTransport(orderId);
 
         //then
         assertThat(response.getId()).isEqualTo(transportId);
@@ -127,7 +127,7 @@ class TransportServiceImplTest {
         assertThat(response.getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
         assertThat(response.getCompletionDatetime()).isEqualTo(LocalDate.now());
 
-        verify(repository, times(1)).findById(transportId);
+        verify(repository, times(1)).findByOrderId(orderId);
     }
 
     @Test
