@@ -212,4 +212,45 @@ class TransportServiceImplTest {
 
         verify(repository, times(1)).findById(transportId);
     }
+
+    @Test
+    @DisplayName("존재 하지 않는 배송의 경우 주문 번호 기준 조회 불가")
+    void findByOrderId_fail_whenNotExist() throws Exception {
+        //given
+        long orderId = 1L;
+
+        Mockito.when(repository.findByOrderId(orderId)).thenReturn(Optional.empty());
+
+        //when, then
+        assertThatThrownBy(() -> service.findByOrderId(orderId))
+                .isInstanceOf(TransportNotFoundByOrderIdException.class)
+                .hasMessageContainingAll("Transport not founded, order id: " + orderId);
+
+        verify(repository, times(1)).findByOrderId(orderId);
+    }
+
+    @Test
+    @DisplayName("주문 번호 기준 배송 조회 성공")
+    void findByOrderId() throws Exception {
+        //given
+        long transportId = 1L;
+        long orderId = 1L;
+        String trackingNo = UUID.randomUUID().toString();
+        Transport transport = DummyTransport.dummyWithId(clock, trackingNo);
+
+        Mockito.when(repository.findByOrderId(orderId)).thenReturn(Optional.of(transport));
+
+        //when
+        TransportResponseDto response = service.findByOrderId(orderId);
+
+        //then
+        assertThat(response.getId()).isEqualTo(transportId);
+        assertThat(response.getOrderId()).isEqualTo(orderId);
+        assertThat(response.getTrackingNo()).isEqualTo(trackingNo);
+        assertThat(response.getTransportStatus()).isEqualTo(TransportStatusCode.INPROGRESS.name());
+        assertThat(response.getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
+        assertThat(response.getCompletionDatetime()).isNull();
+
+        verify(repository, times(1)).findByOrderId(orderId);
+    }
 }
