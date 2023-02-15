@@ -39,6 +39,7 @@ class TransportRepositoryTest {
     void setUp() {
         trackingNo = UUID.randomUUID().toString();
         transport = DummyTransport.dummy(clock, trackingNo);
+        entityManager.persist(transport);
     }
 
     @Test
@@ -61,7 +62,6 @@ class TransportRepositoryTest {
         //given
         long transportId = 1L;
         long orderId = 1L;
-        entityManager.persist(transport);
 
         //when
         Optional<Transport> optionalTransport = repository.findById(transportId);
@@ -78,7 +78,7 @@ class TransportRepositoryTest {
     void findByOrderId() throws Exception {
         //given
         long orderId = 1L;
-        entityManager.persist(transport);
+//        entityManager.persist(transport);
 
         //when
         Optional<Transport> optionalTransport = repository.findByOrderId(orderId);
@@ -94,7 +94,7 @@ class TransportRepositoryTest {
     @Test
     void getLatestTransportBy_failedNotFound() throws Exception {
         // given
-        long orderId = 1L;
+        long orderId = 11L;
 
         //when
         Optional<Transport> latestTransport = repository.getLatestTransportByOrderId(orderId);
@@ -107,7 +107,7 @@ class TransportRepositoryTest {
     void getLatestTransportBy() throws Exception {
         //given
         long orderId = 1L;
-        entityManager.persist(transport);
+//        entityManager.persist(transport);
 
         //when
         Optional<Transport> latestTransport = repository.getLatestTransportByOrderId(orderId);

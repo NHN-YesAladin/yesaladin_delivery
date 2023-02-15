@@ -1,19 +1,7 @@
-server:
-  port: 8083
-
 spring:
   application:
     name: yesaladin-delivery
-  cloud:
-    config:
-      enabled: false
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://133.186.151.141:3306/yesaladin_delivery_test?serverTimezone=Asia/Seoul
-    username: yesaladin
-    password: PR7QyDl]Ojwaw7Y@
-
-yesaladin:
-  gateway:
-    base: http://localhost:8072
-    shop: http://localhost:8072/shop
+  profiles:
+    default: test
+  config:
+    import: optional:configserver:http://133.186.209.185:8888
