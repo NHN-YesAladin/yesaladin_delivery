@@ -22,6 +22,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.yesaladin.common.dto.ResponseDto;
+import shop.yesaladin.delivery.common.dto.ResultCodeDto;
+import shop.yesaladin.delivery.config.GatewayProperties;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.service.event.TransportCompleteEventListener;
 import shop.yesaladin.delivery.transport.service.inter.TransportService;
@@ -39,6 +41,7 @@ public class OrderStatusChangeScheduler {
 
     private final TransportService transportService;
     private final RestTemplate restTemplate;
+    private final GatewayProperties gatewayProperties;
     private ThreadPoolTaskScheduler scheduler;
     private static final String EXECUTE_CRON = "0 0/1 * * * ?";
 
@@ -50,23 +53,29 @@ public class OrderStatusChangeScheduler {
                 Long orderId = TransportCompleteEventListener.orderIdQueue.poll();
                 Transport transport = transportService.getLatestTransport(orderId);
                 if (Objects.nonNull(transport)) {
-                    // restTemplate call
-//                    UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl("")
-//                            .build();
-//
-//                    HttpHeaders headers = new HttpHeaders();
-//                    headers.setContentType(MediaType.APPLICATION_JSON);
-//                    HttpEntity<String> entity = new HttpEntity<>(headers);
-//
-//                    ResponseEntity<ResponseDto<CategoryResponseDto>> responseEntity = restTemplate.exchange(
-//                            uriComponents.toUri(),
-//                            HttpMethod.POST,
-//                            entity,
-//                            new ParameterizedTypeReference<>() {
-//                            }
-//                    );
                     log.info("latest transport orderId={}", transport.getOrderId());
                     log.info("status={}", transport.getTransportStatusCode());
+
+                    // restTemplate call
+                    UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(
+                                    gatewayProperties.getShopUrl()
+                                            + "/v1/orders/{orderId}/delivery-complete")
+                            .build()
+                            .expand(orderId);
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<String> entity = new HttpEntity<>(headers);
+
+                    ResponseEntity<ResponseDto<ResultCodeDto>> responseEntity = restTemplate.exchange(
+                            uriComponents.toUri(),
+                            HttpMethod.POST,
+                            entity,
+                            new ParameterizedTypeReference<>() {
+                            }
+                    );
+                    ResultCodeDto data = Objects.requireNonNull(responseEntity.getBody().getData());
+                    log.info("API Call result={}", data.getResult());
                 }
             }
         };
