@@ -1,6 +1,7 @@
 package shop.yesaladin.delivery.transport.service.inter;
 
 import java.util.List;
+import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.dto.TransportResponseDto;
 
 /**
@@ -59,4 +60,13 @@ public interface TransportService {
      * @since 1.0
      */
     TransportResponseDto findByOrderId(Long orderId);
+
+    /**
+     * 완료 상태의 배송 중 가장 최신의 것에 담긴 orderId를 조회 하기 위한 기능 입니다.
+     *
+     * @return 완료 상태의 배송 중 가장 최신의 것에 담긴 orderId
+     * @author 송학현
+     * @since 1.0
+     */
+    Transport getLatestTransport();
 }
