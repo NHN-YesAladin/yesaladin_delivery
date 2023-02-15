@@ -34,11 +34,13 @@ public class TransportRepositoryCustomImpl extends QuerydslRepositorySupport imp
      * {@inheritDoc}
      */
     @Override
-    public Optional<Transport> getLatestTransportBy() {
+    public Optional<Transport> getLatestTransportByOrderId(Long orderId) {
         QTransport transport = QTransport.transport;
 
         return Optional.ofNullable(from(transport)
-                .orderBy(transport.id.desc())
+                .select(transport)
+                .where(transport.orderId.eq(orderId))
+                .orderBy(transport.id.asc())
                 .fetchFirst());
     }
 }

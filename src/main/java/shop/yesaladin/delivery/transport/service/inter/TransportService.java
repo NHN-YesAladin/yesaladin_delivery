@@ -68,5 +68,5 @@ public interface TransportService {
      * @author 송학현
      * @since 1.0
      */
-    Transport getLatestTransport();
+    Transport getLatestTransport(Long orderId);
 }

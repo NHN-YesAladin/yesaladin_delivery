@@ -1,5 +1,7 @@
 package shop.yesaladin.delivery.transport.service.event;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,8 @@ public class TransportCompleteEventListener {
 
     private final TransportService transportService;
 
+    public static Queue<Long> orderIdQueue = new ConcurrentLinkedQueue<>();
+
     /**
      * 배송 등록 후 해당 배송 entity를 완료 상태로 변경하기 위한 이벤트 처리 메소드 입니다.
      *
@@ -31,7 +35,10 @@ public class TransportCompleteEventListener {
      */
     @TransactionalEventListener
     public void handleTransportStatus(TransportCompleteEventDto dto) {
-        TransportResponseDto transport = transportService.findByOrderId(dto.getOrderId());
+        Long orderId = dto.getOrderId();
+        TransportResponseDto transport = transportService.findByOrderId(orderId);
         transportService.completeTransport(transport.getOrderId());
+        orderIdQueue.add(orderId);
+        log.info("handleTransportStatus success");
     }
 }

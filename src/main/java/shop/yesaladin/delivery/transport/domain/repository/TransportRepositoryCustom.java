@@ -31,5 +31,5 @@ public interface TransportRepositoryCustom {
      * @author 송학현
      * @since 1.0
      */
-    Optional<Transport> getLatestTransportBy();
+    Optional<Transport> getLatestTransportByOrderId(Long orderId);
 }

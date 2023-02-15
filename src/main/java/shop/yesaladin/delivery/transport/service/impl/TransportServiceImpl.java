@@ -113,7 +113,7 @@ public class TransportServiceImpl implements TransportService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Transport getLatestTransport() {
-        return transportRepository.getLatestTransportBy().orElse(null);
+    public Transport getLatestTransport(Long orderId) {
+        return transportRepository.getLatestTransportByOrderId(orderId).orElse(null);
     }
 }

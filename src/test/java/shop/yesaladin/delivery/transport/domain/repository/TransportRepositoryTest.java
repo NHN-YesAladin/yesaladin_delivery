@@ -96,8 +96,11 @@ class TransportRepositoryTest {
     
     @Test
     void getLatestTransportBy_failedNotFound() throws Exception {
+        // given
+        long orderId = 1L;
+
         //when
-        Optional<Transport> latestTransport = repository.getLatestTransportBy();
+        Optional<Transport> latestTransport = repository.getLatestTransportByOrderId(orderId);
 
         //then
         assertThat(latestTransport).isEmpty();
@@ -106,10 +109,11 @@ class TransportRepositoryTest {
     @Test
     void getLatestTransportBy() throws Exception {
         //given
+        long orderId = 1L;
         entityManager.persist(transport);
 
         //when
-        Optional<Transport> latestTransport = repository.getLatestTransportBy();
+        Optional<Transport> latestTransport = repository.getLatestTransportByOrderId(orderId);
 
         //then
         assertThat(latestTransport).isPresent();

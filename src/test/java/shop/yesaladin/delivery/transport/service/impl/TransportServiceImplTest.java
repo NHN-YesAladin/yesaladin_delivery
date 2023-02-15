@@ -3,6 +3,7 @@ package shop.yesaladin.delivery.transport.service.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -258,10 +259,11 @@ class TransportServiceImplTest {
     @DisplayName("가장 최근 배송 조회 시 존재 하지 않는 경우 null이 반환 된다.")
     void getLatestTransport_failed_notExist() throws Exception {
         //given
-        Mockito.when(repository.getLatestTransportBy()).thenReturn(Optional.empty());
+        long orderId = 1L;
+        Mockito.when(repository.getLatestTransportByOrderId(anyLong())).thenReturn(Optional.empty());
 
         //when
-        Transport latestTransport = service.getLatestTransport();
+        Transport latestTransport = service.getLatestTransport(orderId);
 
         //then
         assertThat(latestTransport).isNull();
@@ -276,10 +278,10 @@ class TransportServiceImplTest {
         String trackingNo = UUID.randomUUID().toString();
         Transport transport = DummyTransport.dummyAlreadyComplete(clock, trackingNo);
 
-        Mockito.when(repository.getLatestTransportBy()).thenReturn(Optional.of(transport));
+        Mockito.when(repository.getLatestTransportByOrderId(anyLong())).thenReturn(Optional.of(transport));
 
         //when
-        Transport latestTransport = service.getLatestTransport();
+        Transport latestTransport = service.getLatestTransport(orderId);
 
         //then
         assertThat(latestTransport).isNotNull();
