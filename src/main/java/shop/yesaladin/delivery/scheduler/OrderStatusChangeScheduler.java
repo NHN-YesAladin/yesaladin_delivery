@@ -1,9 +1,6 @@
 package shop.yesaladin.delivery.scheduler;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
@@ -39,13 +36,11 @@ import shop.yesaladin.delivery.transport.service.inter.TransportService;
 @Component
 public class OrderStatusChangeScheduler {
 
+    private static final String EXECUTE_CRON = "0 0/3 * * * ?";
     private final TransportService transportService;
     private final RestTemplate restTemplate;
     private final GatewayProperties gatewayProperties;
     private ThreadPoolTaskScheduler scheduler;
-    private static final String EXECUTE_CRON = "0 0/1 * * * ?";
-
-    private static final Set<Long> orderIdSet = Collections.synchronizedSet(new HashSet<>());
 
     private Runnable getRunnable() {
         return () -> {
