@@ -253,4 +253,41 @@ class TransportServiceImplTest {
 
         verify(repository, times(1)).findByOrderId(orderId);
     }
+
+    @Test
+    @DisplayName("가장 최근 배송 조회 시 존재 하지 않는 경우 null이 반환 된다.")
+    void getLatestTransport_failed_notExist() throws Exception {
+        //given
+        Mockito.when(repository.getLatestTransportBy()).thenReturn(Optional.empty());
+
+        //when
+        Transport latestTransport = service.getLatestTransport();
+
+        //then
+        assertThat(latestTransport).isNull();
+    }
+
+    @Test
+    @DisplayName("가장 최근 배송 조회 성공")
+    void getLatestTransport() throws Exception {
+        //given
+        long transportId = 1L;
+        long orderId = 1L;
+        String trackingNo = UUID.randomUUID().toString();
+        Transport transport = DummyTransport.dummyAlreadyComplete(clock, trackingNo);
+
+        Mockito.when(repository.getLatestTransportBy()).thenReturn(Optional.of(transport));
+
+        //when
+        Transport latestTransport = service.getLatestTransport();
+
+        //then
+        assertThat(latestTransport).isNotNull();
+        assertThat(latestTransport.getId()).isEqualTo(transportId);
+        assertThat(latestTransport.getOrderId()).isEqualTo(orderId);
+        assertThat(latestTransport.getTrackingNo()).isEqualTo(trackingNo);
+        assertThat(latestTransport.getTransportStatusCode()).isEqualTo(TransportStatusCode.COMPLETE);
+        assertThat(latestTransport.getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
+        assertThat(latestTransport.getCompletionDatetime()).isEqualTo(LocalDate.now(clock));
+    }
 }
