@@ -8,7 +8,7 @@ package shop.yesaladin.delivery.transport.exception;
  */
 public class TransportAlreadyCompletedException extends RuntimeException {
 
-    private static final String MESSAGE = "Transport already completed, transport id: ";
+    private static final String MESSAGE = "Transport already completed, order id: ";
 
     public TransportAlreadyCompletedException(Long id) {
         super(MESSAGE + id);

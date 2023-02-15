@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import shop.yesaladin.delivery.common.dto.ErrorResponseDto;
 import shop.yesaladin.delivery.transport.exception.TransportAlreadyCompletedException;
+import shop.yesaladin.delivery.transport.exception.TransportNotFoundByOrderIdException;
 import shop.yesaladin.delivery.transport.exception.TransportNotFoundException;
 
 /**
@@ -20,7 +21,7 @@ import shop.yesaladin.delivery.transport.exception.TransportNotFoundException;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-    @ExceptionHandler(TransportNotFoundException.class)
+    @ExceptionHandler({TransportNotFoundException.class, TransportNotFoundByOrderIdException.class})
     public ResponseEntity<ErrorResponseDto> handleNotFoundException(Exception ex) {
         log.error("[NOT_FOUND] handleNotFoundException", ex);
         ErrorResponseDto error = new ErrorResponseDto(ex.getMessage());

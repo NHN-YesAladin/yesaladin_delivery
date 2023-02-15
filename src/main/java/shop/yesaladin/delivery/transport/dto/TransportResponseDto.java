@@ -1,10 +1,10 @@
 package shop.yesaladin.delivery.transport.dto;
 
 import java.time.LocalDate;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 
 /**
@@ -14,8 +14,9 @@ import shop.yesaladin.delivery.transport.domain.model.Transport;
  * @since 1.0
  */
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class TransportResponseDto {
 
     private Long id;

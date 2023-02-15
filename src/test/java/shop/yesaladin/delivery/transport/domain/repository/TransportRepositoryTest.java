@@ -76,4 +76,21 @@ class TransportRepositoryTest {
         assertThat(optionalTransport.get().getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
         assertThat(optionalTransport.get().getTransportStatusCode()).isEqualTo(TransportStatusCode.INPROGRESS);
     }
+
+    @Test
+    void findByOrderId() throws Exception {
+        //given
+        long orderId = 1L;
+        entityManager.persist(transport);
+
+        //when
+        Optional<Transport> optionalTransport = repository.findByOrderId(orderId);
+
+        //then
+        assertThat(optionalTransport).isPresent();
+        assertThat(optionalTransport.get().getOrderId()).isEqualTo(orderId);
+        assertThat(optionalTransport.get().getTrackingNo()).isEqualTo(trackingNo);
+        assertThat(optionalTransport.get().getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
+        assertThat(optionalTransport.get().getTransportStatusCode()).isEqualTo(TransportStatusCode.INPROGRESS);
+    }
 }

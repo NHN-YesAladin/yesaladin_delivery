@@ -6,12 +6,17 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.domain.model.TransportStatusCode;
 import shop.yesaladin.delivery.transport.domain.repository.TransportRepository;
+import shop.yesaladin.delivery.transport.dto.TransportCompleteEventDto;
 import shop.yesaladin.delivery.transport.dto.TransportResponseDto;
+import shop.yesaladin.delivery.transport.exception.TransportNotFoundByOrderIdException;
 import shop.yesaladin.delivery.transport.exception.TransportNotFoundException;
 import shop.yesaladin.delivery.transport.service.inter.TransportService;
 
@@ -27,6 +32,7 @@ import shop.yesaladin.delivery.transport.service.inter.TransportService;
 public class TransportServiceImpl implements TransportService {
 
     private final TransportRepository transportRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     /**
      * {@inheritDoc}
@@ -44,6 +50,8 @@ public class TransportServiceImpl implements TransportService {
                 .build();
         Transport savedTransport = transportRepository.save(transport);
 
+        applicationEventPublisher.publishEvent(new TransportCompleteEventDto(transport.getOrderId()));
+
         return TransportResponseDto.fromEntity(savedTransport);
     }
 
@@ -51,16 +59,18 @@ public class TransportServiceImpl implements TransportService {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
-    public TransportResponseDto completeTransport(Long transportId) {
-        Transport transport = getTransport(transportId);
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public TransportResponseDto completeTransport(Long orderId) {
+        Transport transport = getTransport(orderId);
         transport.completeTransport();
+        transportRepository.save(transport);
         return TransportResponseDto.fromEntity(transport);
     }
 
-    private Transport getTransport(Long transportId) {
-        return transportRepository.findById(transportId)
-                .orElseThrow(() -> new TransportNotFoundException(transportId));
+    private Transport getTransport(Long orderId) {
+        return transportRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new TransportNotFoundByOrderIdException(orderId));
     }
 
     /**
@@ -80,7 +90,19 @@ public class TransportServiceImpl implements TransportService {
     @Override
     @Transactional(readOnly = true)
     public TransportResponseDto findById(Long transportId) {
-        Transport transport = getTransport(transportId);
+        Transport transport = transportRepository.findById(transportId)
+                .orElseThrow(() -> new TransportNotFoundException(transportId));
+
+        return TransportResponseDto.fromEntity(transport);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TransportResponseDto findByOrderId(Long orderId) {
+        Transport transport = transportRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new TransportNotFoundByOrderIdException(orderId));
 
         return TransportResponseDto.fromEntity(transport);
     }

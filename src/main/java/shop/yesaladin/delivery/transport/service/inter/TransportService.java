@@ -24,12 +24,12 @@ public interface TransportService {
     /**
      * 배송 상태를 완료로 변경 하기 위한 기능 입니다.
      *
-     * @param transportId 배송의 PK 입니다.
+     * @param orderId 배송 entity에 들어 있는 주문의 PK 입니다.
      * @return 배송 상태 변경 시 해당 배송에 대한 정보를 담은 DTO 입니다.
      * @author 송학현
      * @since 1.0
      */
-    TransportResponseDto completeTransport(Long transportId);
+    TransportResponseDto completeTransport(Long orderId);
 
     /**
      * 전체 배송 조회를 위한 기능 입니다.
@@ -49,4 +49,14 @@ public interface TransportService {
      * @since 1.0
      */
     TransportResponseDto findById(Long transportId);
+
+    /**
+     * 주문 번호 기준 배송 단건 조회를 위한 기능 입니다.
+     *
+     * @param orderId 조회 대상 배송에 들어 있는 주문 번호 입니다.
+     * @return 배송에 대한 정보를 담은 DTO 입니다.
+     * @author 송학현
+     * @since 1.0
+     */
+    TransportResponseDto findByOrderId(Long orderId);
 }
