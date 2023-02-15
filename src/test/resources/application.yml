@@ -1,7 +1,15 @@
 spring:
-  application:
-    name: yesaladin-delivery
-  profiles:
-    default: test
-  config:
-    import: optional:configserver:http://133.186.209.185:8888
+  datasource:
+    url: jdbc:h2:mem:/test
+    username: sa
+    password:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+yesaladin:
+  gateway:
+    base: http://localhost:8072
+    shop: http://localhost:8072/shop
