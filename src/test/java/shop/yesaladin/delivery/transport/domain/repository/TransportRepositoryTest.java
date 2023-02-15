@@ -8,23 +8,20 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.domain.model.TransportStatusCode;
 import shop.yesaladin.delivery.transport.dummy.DummyTransport;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 class TransportRepositoryTest {
 
     @Autowired
-    TestEntityManager entityManager;
+    EntityManager entityManager;
 
     @Autowired
     private TransportRepository repository;
@@ -64,7 +61,7 @@ class TransportRepositoryTest {
         //given
         long transportId = 1L;
         long orderId = 1L;
-        Transport savedTransport = entityManager.persist(transport);
+        entityManager.persist(transport);
 
         //when
         Optional<Transport> optionalTransport = repository.findById(transportId);
