@@ -8,3 +8,8 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+yesaladin:
+  gateway:
+    base: http://localhost:8072
+    shop: http://localhost:8072/shop
