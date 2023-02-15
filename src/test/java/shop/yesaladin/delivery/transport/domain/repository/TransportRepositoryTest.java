@@ -8,23 +8,20 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.domain.model.TransportStatusCode;
 import shop.yesaladin.delivery.transport.dummy.DummyTransport;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 class TransportRepositoryTest {
 
     @Autowired
-    TestEntityManager entityManager;
+    EntityManager entityManager;
 
     @Autowired
     private TransportRepository repository;
@@ -42,6 +39,7 @@ class TransportRepositoryTest {
     void setUp() {
         trackingNo = UUID.randomUUID().toString();
         transport = DummyTransport.dummy(clock, trackingNo);
+        entityManager.persist(transport);
     }
 
     @Test
@@ -64,7 +62,6 @@ class TransportRepositoryTest {
         //given
         long transportId = 1L;
         long orderId = 1L;
-        Transport savedTransport = entityManager.persist(transport);
 
         //when
         Optional<Transport> optionalTransport = repository.findById(transportId);
@@ -75,5 +72,47 @@ class TransportRepositoryTest {
         assertThat(optionalTransport.get().getTrackingNo()).isEqualTo(trackingNo);
         assertThat(optionalTransport.get().getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
         assertThat(optionalTransport.get().getTransportStatusCode()).isEqualTo(TransportStatusCode.INPROGRESS);
+    }
+
+    @Test
+    void findByOrderId() throws Exception {
+        //given
+        long orderId = 1L;
+//        entityManager.persist(transport);
+
+        //when
+        Optional<Transport> optionalTransport = repository.findByOrderId(orderId);
+
+        //then
+        assertThat(optionalTransport).isPresent();
+        assertThat(optionalTransport.get().getOrderId()).isEqualTo(orderId);
+        assertThat(optionalTransport.get().getTrackingNo()).isEqualTo(trackingNo);
+        assertThat(optionalTransport.get().getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
+        assertThat(optionalTransport.get().getTransportStatusCode()).isEqualTo(TransportStatusCode.INPROGRESS);
+    }
+    
+    @Test
+    void getLatestTransportBy_failedNotFound() throws Exception {
+        // given
+        long orderId = 11L;
+
+        //when
+        Optional<Transport> latestTransport = repository.getLatestTransportByOrderId(orderId);
+
+        //then
+        assertThat(latestTransport).isEmpty();
+    }
+
+    @Test
+    void getLatestTransportBy() throws Exception {
+        //given
+        long orderId = 1L;
+//        entityManager.persist(transport);
+
+        //when
+        Optional<Transport> latestTransport = repository.getLatestTransportByOrderId(orderId);
+
+        //then
+        assertThat(latestTransport).isPresent();
     }
 }

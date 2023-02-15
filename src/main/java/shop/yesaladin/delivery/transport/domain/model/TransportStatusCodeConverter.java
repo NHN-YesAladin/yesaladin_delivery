@@ -11,7 +11,8 @@ import javax.persistence.Converter;
  * @since 1.0
  */
 @Converter(autoApply = true)
-public class TransportStatusCodeConverter implements AttributeConverter<TransportStatusCode, Integer> {
+public class TransportStatusCodeConverter implements
+        AttributeConverter<TransportStatusCode, Integer> {
 
     /**
      * 배송상태코드를 Integer 타입으로 변환합니다.
