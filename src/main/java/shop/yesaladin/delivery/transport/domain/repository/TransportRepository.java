@@ -9,6 +9,7 @@ import shop.yesaladin.delivery.transport.domain.model.Transport;
  * @author 송학현
  * @since 1.0
  */
-public interface TransportRepository extends JpaRepository<Transport, Long>, TransportRepositoryCustom {
+public interface TransportRepository extends JpaRepository<Transport, Long>,
+        TransportRepositoryCustom {
 
 }

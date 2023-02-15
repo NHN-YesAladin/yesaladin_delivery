@@ -27,8 +27,7 @@ public class TransportController {
     private final TransportService transportService;
 
     /**
-     * 배송 등록을 위한 POST API 입니다.
-     * POST: /api/delivery/{orderId}
+     * 배송 등록을 위한 POST API 입니다. POST: /api/delivery/{orderId}
      *
      * @param orderId 주문 번호(주문의 PK) 입니다.
      * @return 등록 완료 된 배송 정보를 담은 DTO를 반환합니다.
@@ -47,8 +46,7 @@ public class TransportController {
     }
 
     /**
-     * 배송 전체 조회를 위한 GET API 입니다.
-     * GET: /api/delivery
+     * 배송 전체 조회를 위한 GET API 입니다. GET: /api/delivery
      *
      * @return 등록된 배송의 전체 리스트를 반환 합니다.
      * @author 송학현
@@ -66,8 +64,7 @@ public class TransportController {
     }
 
     /**
-     * 배송 단건 조회를 위한 GET API 입니다.
-     * GET: /api/delivery/{transportId}
+     * 배송 단건 조회를 위한 GET API 입니다. GET: /api/delivery/{transportId}
      *
      * @param transportId 배송의 PK 입니다.
      * @return 배송 단건 조회 결과 입니다.

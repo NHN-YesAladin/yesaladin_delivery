@@ -24,8 +24,7 @@ public interface TransportRepositoryCustom {
     Optional<Transport> findByOrderId(Long orderId);
 
     /**
-     * 완료 상태의 배송 중 가장 최신의 배송에 담긴 orderId를 조회합니다.
-     * (이벤트 리스너의 동작으로 저장된 모든 배송은 완료 상태 입니다.)
+     * 완료 상태의 배송 중 가장 최신의 배송에 담긴 orderId를 조회합니다. (이벤트 리스너의 동작으로 저장된 모든 배송은 완료 상태 입니다.)
      *
      * @return 완료 상태의 배송 중 가장 최신의 배송에 담긴 orderId
      * @author 송학현
