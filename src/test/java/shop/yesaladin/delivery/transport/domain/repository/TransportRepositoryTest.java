@@ -93,4 +93,25 @@ class TransportRepositoryTest {
         assertThat(optionalTransport.get().getReceptionDatetime()).isEqualTo(LocalDate.now(clock));
         assertThat(optionalTransport.get().getTransportStatusCode()).isEqualTo(TransportStatusCode.INPROGRESS);
     }
+    
+    @Test
+    void getLatestTransportBy_failedNotFound() throws Exception {
+        //when
+        Optional<Transport> latestTransport = repository.getLatestTransportBy();
+
+        //then
+        assertThat(latestTransport).isEmpty();
+    }
+
+    @Test
+    void getLatestTransportBy() throws Exception {
+        //given
+        entityManager.persist(transport);
+
+        //when
+        Optional<Transport> latestTransport = repository.getLatestTransportBy();
+
+        //then
+        assertThat(latestTransport).isPresent();
+    }
 }
