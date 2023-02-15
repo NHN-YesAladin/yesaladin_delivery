@@ -39,7 +39,7 @@ public class Transport {
     @Column(name = "completion_datetime")
     private LocalDate completionDatetime;
 
-    @Column(name = "order_id", nullable = false)
+    @Column(name = "order_id", nullable = false, unique = true)
     private Long orderId;
 
     @Column(name = "tracking_no", nullable = false)
