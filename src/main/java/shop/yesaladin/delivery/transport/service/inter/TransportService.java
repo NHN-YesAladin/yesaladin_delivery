@@ -49,4 +49,14 @@ public interface TransportService {
      * @since 1.0
      */
     TransportResponseDto findById(Long transportId);
+
+    /**
+     * 주문 번호 기준 배송 단건 조회를 위한 기능 입니다.
+     *
+     * @param orderId 조회 대상 배송에 들어 있는 주문 번호 입니다.
+     * @return 배송에 대한 정보를 담은 DTO 입니다.
+     * @author 송학현
+     * @since 1.0
+     */
+    TransportResponseDto findByOrderId(Long orderId);
 }

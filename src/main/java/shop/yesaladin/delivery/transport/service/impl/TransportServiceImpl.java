@@ -91,4 +91,15 @@ public class TransportServiceImpl implements TransportService {
 
         return TransportResponseDto.fromEntity(transport);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TransportResponseDto findByOrderId(Long orderId) {
+        Transport transport = transportRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new TransportNotFoundByOrderIdException(orderId));
+
+        return TransportResponseDto.fromEntity(transport);
+    }
 }
