@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
@@ -27,6 +28,7 @@ import shop.yesaladin.delivery.transport.service.inter.TransportService;
 public class TransportServiceImpl implements TransportService {
 
     private final TransportRepository transportRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     /**
      * {@inheritDoc}

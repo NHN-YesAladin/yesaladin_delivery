@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.context.ApplicationEventPublisher;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.domain.model.TransportStatusCode;
 import shop.yesaladin.delivery.transport.domain.repository.TransportRepository;
@@ -30,6 +31,7 @@ class TransportServiceImplTest {
 
     private TransportService service;
     private TransportRepository repository;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private final Clock clock = Clock.fixed(
             Instant.parse("2023-01-19T00:00:00.000Z"),
@@ -39,7 +41,8 @@ class TransportServiceImplTest {
     @BeforeEach
     void setUp() {
         repository = Mockito.mock(TransportRepository.class);
-        service = new TransportServiceImpl(repository);
+        applicationEventPublisher = Mockito.mock(ApplicationEventPublisher.class);
+        service = new TransportServiceImpl(repository, applicationEventPublisher);
     }
 
     @Test
