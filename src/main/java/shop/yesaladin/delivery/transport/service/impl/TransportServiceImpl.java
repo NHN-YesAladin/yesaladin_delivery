@@ -91,7 +91,7 @@ public class TransportServiceImpl implements TransportService {
     @Transactional(readOnly = true)
     public TransportResponseDto findById(Long transportId) {
         Transport transport = transportRepository.findById(transportId)
-                .orElseThrow(() -> new TransportNotFoundException(transportId));
+                .orElseThrow(() -> new TransportNotFoundException(String.valueOf(transportId)));
 
         return TransportResponseDto.fromEntity(transport);
     }
@@ -100,10 +100,20 @@ public class TransportServiceImpl implements TransportService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public TransportResponseDto findByOrderId(Long orderId) {
         Transport transport = transportRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new TransportNotFoundByOrderIdException(orderId));
 
         return TransportResponseDto.fromEntity(transport);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Transport getLatestTransport() {
+        return transportRepository.getLatestTransportBy().orElse(null);
     }
 }

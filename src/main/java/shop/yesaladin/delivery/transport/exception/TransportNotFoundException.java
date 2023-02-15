@@ -10,7 +10,7 @@ public class TransportNotFoundException extends RuntimeException {
 
     private static final String MESSAGE = "Transport not founded, transport id: ";
 
-    public TransportNotFoundException(Long id) {
+    public TransportNotFoundException(String id) {
         super(MESSAGE + id);
     }
 }

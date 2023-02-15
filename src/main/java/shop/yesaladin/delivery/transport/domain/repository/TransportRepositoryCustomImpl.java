@@ -11,7 +11,8 @@ import shop.yesaladin.delivery.transport.domain.model.Transport;
  * @author 송학현
  * @since 1.0
  */
-public class TransportRepositoryCustomImpl extends QuerydslRepositorySupport implements TransportRepositoryCustom {
+public class TransportRepositoryCustomImpl extends QuerydslRepositorySupport implements
+        TransportRepositoryCustom {
 
     public TransportRepositoryCustomImpl() {
         super(Transport.class);
@@ -27,5 +28,17 @@ public class TransportRepositoryCustomImpl extends QuerydslRepositorySupport imp
         return Optional.ofNullable(from(transport)
                 .where(transport.orderId.eq(orderId))
                 .fetchOne());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Transport> getLatestTransportBy() {
+        QTransport transport = QTransport.transport;
+
+        return Optional.ofNullable(from(transport)
+                .orderBy(transport.id.desc())
+                .fetchFirst());
     }
 }
