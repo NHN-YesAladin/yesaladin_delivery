@@ -8,7 +8,7 @@ package shop.yesaladin.delivery.transport.exception;
  */
 public class TransportNotFoundException extends RuntimeException {
 
-    private static final String MESSAGE = "Transport not founded, order id: ";
+    private static final String MESSAGE = "Transport not founded, transport id: ";
 
     public TransportNotFoundException(Long id) {
         super(MESSAGE + id);

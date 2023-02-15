@@ -14,6 +14,7 @@ import shop.yesaladin.delivery.transport.domain.model.TransportStatusCode;
 import shop.yesaladin.delivery.transport.domain.repository.TransportRepository;
 import shop.yesaladin.delivery.transport.dto.TransportCompleteEventDto;
 import shop.yesaladin.delivery.transport.dto.TransportResponseDto;
+import shop.yesaladin.delivery.transport.exception.TransportNotFoundByOrderIdException;
 import shop.yesaladin.delivery.transport.exception.TransportNotFoundException;
 import shop.yesaladin.delivery.transport.service.inter.TransportService;
 
@@ -65,7 +66,7 @@ public class TransportServiceImpl implements TransportService {
 
     private Transport getTransport(Long orderId) {
         return transportRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new TransportNotFoundException(orderId));
+                .orElseThrow(() -> new TransportNotFoundByOrderIdException(orderId));
     }
 
     /**
@@ -85,7 +86,8 @@ public class TransportServiceImpl implements TransportService {
     @Override
     @Transactional(readOnly = true)
     public TransportResponseDto findById(Long transportId) {
-        Transport transport = getTransport(transportId);
+        Transport transport = transportRepository.findById(transportId)
+                .orElseThrow(() -> new TransportNotFoundException(transportId));
 
         return TransportResponseDto.fromEntity(transport);
     }
