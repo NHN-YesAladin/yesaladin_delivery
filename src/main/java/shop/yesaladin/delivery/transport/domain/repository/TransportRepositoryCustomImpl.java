@@ -1,6 +1,8 @@
 package shop.yesaladin.delivery.transport.domain.repository;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import shop.yesaladin.delivery.transport.domain.model.QTransport;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 
 /**
@@ -15,5 +17,15 @@ public class TransportRepositoryCustomImpl extends QuerydslRepositorySupport imp
         super(Transport.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Transport> findByOrderId(Long orderId) {
+        QTransport transport = QTransport.transport;
 
+        return Optional.ofNullable(from(transport)
+                .where(transport.orderId.eq(orderId))
+                .fetchOne());
+    }
 }
