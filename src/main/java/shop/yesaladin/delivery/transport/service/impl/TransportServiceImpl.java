@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import shop.yesaladin.delivery.transport.domain.model.Transport;
 import shop.yesaladin.delivery.transport.domain.model.TransportStatusCode;
@@ -57,10 +59,12 @@ public class TransportServiceImpl implements TransportService {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public TransportResponseDto completeTransport(Long orderId) {
         Transport transport = getTransport(orderId);
         transport.completeTransport();
+        transportRepository.save(transport);
         return TransportResponseDto.fromEntity(transport);
     }
 
