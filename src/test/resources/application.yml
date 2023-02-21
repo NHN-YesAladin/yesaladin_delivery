@@ -5,3 +5,13 @@ spring:
     default: test
   config:
     import: optional:configserver:http://133.186.209.185:8888
+  datasource:
+    dbcp2:
+      max-total: 10  # max-total ~ min-idle은 같은 값을 쓰는게 좋음
+      initial-size: 10
+      max-idle: 10
+      min-idle: 10
+      max-wait-millis: 3000  #사용자가 최대한 대기할 수 있을꺼 같은 시간
+      validation-query: "SELECT 1"  #풀에 커넥션을 반환하기 전이나, 풀을 획득하기 전에 커넥션이 valid한지를 검사
+      test-while-idle: true  #Evictor 가 실행될 때 커넥션 풀 안에 있는 유휴 상태의 커넥션을 대상으로 테스트 실행
+      test-on-borrow: false  #커넥션 풀에서 커넥션을 얻어올 때 테스트 실행 (default는 true)
