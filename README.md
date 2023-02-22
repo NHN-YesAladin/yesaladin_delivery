@@ -22,8 +22,7 @@ YesAladin Delivery는 사용자의 주문/결제 이후 동작하는 더미 서�
 
 ## Project Architecture
 
-// 이미지 추가할 것
-![]()
+<img width="1055" alt="스크린샷 2023-02-22 오전 10 15 46" src="https://user-images.githubusercontent.com/60968342/220496210-6f6e188e-e9fd-4e67-bf50-8dfedc09a1ad.png">
 
 ## Tech Stack
 
