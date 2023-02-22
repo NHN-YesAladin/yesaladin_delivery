@@ -24,6 +24,10 @@ YesAladin Delivery는 사용자의 주문/결제 이후 동작하는 더미 서�
 
 <img width="1055" alt="스크린샷 2023-02-22 오전 10 15 46" src="https://user-images.githubusercontent.com/60968342/220496210-6f6e188e-e9fd-4e67-bf50-8dfedc09a1ad.png">
 
+## CI/CD
+
+<img width="1102" alt="스크린샷 2023-02-22 오후 7 24 08" src="https://user-images.githubusercontent.com/60968342/220593590-58f50bd3-302f-455d-bf99-78371b2a1ba7.png">
+
 ## Tech Stack
 
 ### Languages
